@@ -497,6 +497,42 @@ JHTableEditor._ready_save = function(in_event)
 
 JHTableEditor._load = function()
 {
+	//<table id="edited-table"><tbody></tbody></table>
+	
+	/* zap any previous table */
+	this._editor.innerHTML = '';
+	
+	/* create the basic editor elements; row and column selectors and a blank table */
+	var editor_elements = new DocumentFragment();
+	
+	var selectors_col = document.createElement('table');
+	selectors_col.classList.add('table-editor-selectors');
+	selectors_col.id = 'table-editor-col-selectors';
+	selectors_col.innerHTML = '<tbody><tr><td></td><td>A<div></div></td></tr></tbody>';
+	editor_elements.appendChild(selectors_col);
+	
+	var selectors_row = document.createElement('table');
+	selectors_row.classList.add('table-editor-selectors');
+	selectors_row.id = 'table-editor-row-selectors';
+	selectors_row.innerHTML = '<tbody><tr><td>1</td></tr></tbody>';
+	editor_elements.appendChild(selectors_row);
+	
+	var table = document.createElement('table');
+	table.id = 'edited-table';
+	table.innerHTML = '<tbody><tr><td><br></td></tr></table>';
+	editor_elements.appendChild(table);
+	
+	this._editor.appendChild(editor_elements);
+	
+	selectors_row.style.top = selectors_col.clientHeight -1 + 'px';
+	table.style.left = selectors_row.clientWidth -1 + 'px';
+	table.style.top = selectors_col.clientHeight -1 + 'px';
+	
+	return; // debugging
+
+
+/* load the actual table structure */
+
 	var content_element = document.getElementById('post_content');
 	var temp = document.createElement('div');
 	temp.innerHTML = content_element.value;
@@ -574,8 +610,8 @@ JHTableEditor.init = function()
 	if (this._editor) return;
 	
 	this._editor = document.getElementById('table-editor');
-	this._table = this._editor.children[0];
-	this._body = this._table.children[0];
+	//this._table = this._editor.children[0];
+	//this._body = this._table.children[0];
 	
 	this._load();
 	

@@ -115,7 +115,7 @@ class JHDataTablesAdmin
     <p></p>
 </div>
 	
-<div id="table-editor"><table id="edited-table"><tbody></tbody></table></div>
+<div id="table-editor"></div>
 
 <textarea name="post_content" id="post_content" style="display: none"><?php 
 
