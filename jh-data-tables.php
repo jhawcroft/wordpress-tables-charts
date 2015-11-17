@@ -49,7 +49,7 @@ register_activation_hook( __FILE__, array( 'JHDataTables', 'install' ));
 if ( is_admin() ) 
 {
 	require_once( $base . 'data-tables-admin.class.php' );
-	require_once( $base . 'manage-list.class.php' );
+	//require_once( $base . 'manage-list.class.php' );
 	
 	add_action( 'init', array( 'JHDataTablesAdmin', 'init' ) );
 }

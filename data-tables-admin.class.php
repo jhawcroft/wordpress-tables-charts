@@ -173,8 +173,8 @@ $(document).ready(function() {
 		if (!current_user_can('edit_pages'))
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 			
-		$list = new JHDataTablesList();
-		$list->prepare_items();
+		//$list = new JHDataTablesList();
+		//$list->prepare_items();
 		
 		?><div class="wrap">
 		
@@ -184,7 +184,7 @@ $(document).ready(function() {
 <input type="hidden" name="<?php echo $hidden_field_name; ?>" value="Y">
 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>">
 
-<?php $list->display() ?>
+<?php //$list->display() ?>
 
 <!--<p class="submit">
 <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e('Save Changes') ?>" />
