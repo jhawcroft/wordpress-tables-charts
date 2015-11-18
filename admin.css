@@ -82,3 +82,37 @@ table#edited-table td.cell-selected
 
 
 
+ul.jh-popup-menu
+{
+	display: block;
+	background-color: white;
+	border: 1px solid #AAA;
+	list-style: none;
+	padding: 2px;
+	margin: 0;
+	box-shadow: 2px 2px 2px 0px #999;
+}
+
+ul.jh-popup-menu li
+{
+	margin: 0;
+	padding: 4px;
+	padding-left: 6px;
+	padding-right: 6px;
+	cursor: pointer;
+}
+
+ul.jh-popup-menu li:hover
+{
+	background-color: #CCC;
+}
+
+ul.jh-popup-menu li.divider
+{
+	margin: 0;
+	cursor: default;
+}
+
+
+
+

@@ -39,6 +39,7 @@ class JHDataTablesAdmin
 		}
 		
 		wp_register_style( 'jh-data-tables-admin-css', plugins_url('admin.css', __FILE__) );
+		wp_register_script( 'jh-data-tables-ui-util-js', plugins_url('ui-util.js', __FILE__) );
 		wp_register_script( 'jh-data-tables-admin-js', plugins_url('admin.js', __FILE__) );
 		add_action( 'admin_enqueue_scripts', array('JHDataTablesAdmin', 'admin_scripts') );
 	
@@ -50,6 +51,7 @@ class JHDataTablesAdmin
 	
 	public static function admin_scripts()
 	{
+		wp_enqueue_script( 'jh-data-tables-ui-util-js' );
 		wp_enqueue_script( 'jh-data-tables-admin-js' );
 		wp_enqueue_style( 'jh-data-tables-admin-css' );
 	}
@@ -105,18 +107,7 @@ class JHDataTablesAdmin
 		
 	?>
 	
-<div id="table-editor-toolbar">
-	<input type="text" value="1" id="add-column-count" style="width: 40px;"> 
-	
-	<input type="button" class="button" value="Insert Columns After" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value, true);">
-	<input type="button" class="button" value="Insert Rows After" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value, true);">
-	
-	<input type="button" class="button" value="Insert Columns Before" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value, false);">
-	<input type="button" class="button" value="Insert Rows Before" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value, false);">
-	
-	<input type="button" class="button" value="Delete Rows" onclick="JHTableEditor.delete_selected_rows()">
-	<input type="button" class="button" value="Delete Columns" onclick="JHTableEditor.delete_selected_columns()">
-</div>
+<div id="table-editor-toolbar"></div>
 
 <div class="error notice" id="table-editor-error" style="display: none;">
     <p></p>

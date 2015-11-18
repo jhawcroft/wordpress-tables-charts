@@ -349,6 +349,12 @@ JHTableEditor._handle_multi_cell_select = function(in_event)
 }
 
 
+JHTableEditor.has_selection = function()
+{
+	return this._selected_cells.length > 0;
+}
+
+
 
 
 
@@ -387,6 +393,8 @@ JHTableEditor._delete_columns = function(in_from, in_to)
 		for (var c = 0; c < count; c++)
 			row.removeChild(row.children[in_from]);
 	}
+	
+	this.select_none();
 }
 
 
@@ -408,6 +416,8 @@ JHTableEditor._delete_rows = function(in_from, in_to)
 	var rows = this._body.children;
 	for (var r = 0; r < count; r++)
 		this._body.removeChild(rows[in_from]);
+		
+	this.select_none();
 }
 
 
@@ -429,7 +439,10 @@ JHTableEditor.insert_rows = function(in_count, in_after, in_rel_row)
 	if (in_rel_row === undefined)
 	{
 		if (this._selected_cells.length == 0)
-			in_rel_row = row_count;
+		{
+			if (in_after) in_rel_row = row_count;
+			else in_rel_row = 0;
+		}
 		else
 		{
 			if (in_after) in_rel_row = this._selection_bottom;
@@ -481,7 +494,10 @@ JHTableEditor.insert_columns = function(in_count, in_after, in_rel_col)
 	if (in_rel_col === undefined)
 	{
 		if (this._selected_cells.length == 0)
-			in_rel_col = col_count;
+		{
+			if (in_after) in_rel_col = col_count;
+			else in_rel_col = 0;
+		}
 		else
 		{
 			if (in_after) in_rel_col = this._selection_right;
@@ -563,6 +579,8 @@ JHTableEditor._keydown = function(in_event)
 		in_event.stopPropagation();
 	}
 }
+
+
 
 
 JHTableEditor._ready_save = function(in_event)
@@ -731,8 +749,42 @@ JHTableEditor.init = function()
 	this._screen_resized();
 	
 	JHTableEditor._add_event_listeners();
+	
+	this.init_toolbar();
 }
 
 
+JHTableEditor.init_toolbar = function()
+{
+	var toolbar = document.getElementById('table-editor-toolbar');
+	
+	var btn = document.createElement('input');
+	btn.type = 'button';
+	btn.classList.add('jh-toolbar-btn');
+	btn.addEventListener('mousedown', function(in_event)
+	{
+		var menu = [];
+		
+		menu = menu.concat([ 
+			{ title: 'Insert Rows Above', handler: function() { JHTableEditor.insert_rows(1, false); } }, 
+			{ title: 'Insert Rows Below', handler: function() { JHTableEditor.insert_rows(1, true); } }, 
+			{ title: 'Insert Columns to the Right', handler: function() { JHTableEditor.insert_columns(1, true); } }, 
+			{ title: 'Insert Columns to the Left', handler: function() { JHTableEditor.insert_columns(1, false); } },  
+		]);
+		
+		if (JHTableEditor.has_selection())
+		{
+			menu = menu.concat([ 
+				{ title: '', handler: null }, 
+				{ title: 'Delete Rows', handler: function() { JHTableEditor.delete_selected_rows(); } }, 
+				{ title: 'Delete Columns', handler: function() { JHTableEditor.delete_selected_columns(); } }, 
+			]);
+		}
+		
+		JHUIUtils.popup_menu(menu, in_event.target);
+	});
+	
+	toolbar.appendChild(btn);
+}
 
 
