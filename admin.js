@@ -506,61 +506,13 @@ JHTableEditor._keydown = function(in_event)
 JHTableEditor._ready_save = function(in_event)
 {
 	this._end_edits();
+	
 	var content_element = document.getElementById('post-content');
-	/*
-	var output = [];
-	
-	var rows = this._body.children;
-	var row_count = rows.length;
-	for (var r = 1; r < row_count; r++)
-	{
-		var row = rows[r].children;
-		var col_count = row.length;
-		var output_row = [];
-		
-		for (var c = 1; c < col_count; c++)
-		{
-			var cell = row[c];
-			
-			output_row.push( {
-				value: cell.innerHTML
-			} );
-		}
-		
-		output.push(output_row);
-	}*/
-	
 	var output = this._scroller.innerHTML;
-	
 	content_element.value = JSON.stringify(output);
 }
 
 
-JHTableEditor._build_column_resizers = function()
-{
-	/* remove existing resizers (if any) */
-	for (var r = 0; r < this._resizers.length; r++)
-		this._editor.removeChild(this._resizers[r]);
-	this._resizers.length = 0;
-	
-	/* create new column resizers */
-	var elements = new DocumentFragment();
-	var col_count = this.get_column_count();
-	var x = 0;
-	for (var c = 0; c < col_count; c++)
-	{
-		var off = this._column_offs[c];
-		if (off) x = off + this._column_widths[c];
-		else x += this._column_widths[c];
-		
-		var resizer = document.createElement('div');
-		resizer.classList.add('table-col-resizer');
-		resizer.style.left = x - 3 + 'px';
-		elements.appendChild(resizer);
-		this._resizers.push(resizer);
-	}
-	this._editor.appendChild(elements);
-}
 
 
 JHTableEditor._determine_column_widths = function()
@@ -662,47 +614,6 @@ JHTableEditor._load = function(in_content)
 	
 	return; // debugging
 
-
-/* load the actual table structure */
-/*
-	var content_element = document.getElementById('post_content');
-	var temp = document.createElement('div');
-	temp.innerHTML = content_element.value;
-	
-	var body = temp.children[0].children[0];
-	var rows = body.children;
-	var row_count = rows.length;
-	var col_count = 0;
-	for (var r = 0; r < row_count; r++)
-	{
-		var row = rows[r];
-		var row_selector = document.createElement('td');
-		row_selector.classList.add('sel');
-		//row_selector.id = 'row,'+(r+1);
-		row.insertBefore(row_selector, row.children[0]);
-		
-		col_count = Math.max(col_count, row.children.length);
-	}
-	
-	var column_selectors = document.createElement('tr');
-	for (var c = 0; c < col_count; c++)
-	{
-		var column_selector = document.createElement('td');
-		column_selector.classList.add('sel');
-		//column_selector.id = 'col,'+c;
-		if (c == 0) column_selector.classList.add('corner');
-		if (c > 0) 
-		{
-			var dragger = document.createElement('div');
-			dragger.classList.add('rsz');
-			column_selector.appendChild(dragger);
-		}
-		column_selectors.appendChild(column_selector);
-	}
-	body.insertBefore(column_selectors, rows[0]);
-	
-	this._table.appendChild(body);
-	this._body = body;*/
 }
 
 
