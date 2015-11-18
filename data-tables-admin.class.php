@@ -76,7 +76,7 @@ class JHDataTablesAdmin
 	public static function save_table($in_post_id) // also, this gets called on new
 	{
 		$content = stripslashes($_POST['post_content']);
-		
+		/*
 		if ($content == '') return;
 		
 		$table_data = json_decode(stripslashes($_POST['post_content']), true);
@@ -92,10 +92,10 @@ class JHDataTablesAdmin
 			}
 			$html .= '</tr>';
 		}
-		$html .= '</tbody></table>';
+		$html .= '</tbody></table>';*/
 		
 		remove_action( 'save_post', array('JHDataTablesAdmin', 'save_table') );
-		wp_update_post( array( 'ID' => $in_post_id, 'post_content' => $html ) );
+		wp_update_post( array( 'ID' => $in_post_id, 'post_content' => $content ) );
 		add_action( 'save_post', array('JHDataTablesAdmin', 'save_table') );
 	}
 	
@@ -108,7 +108,8 @@ class JHDataTablesAdmin
 <div id="table-editor-toolbar">
 	<input type="text" value="1" id="add-column-count" style="width: 40px;"> <input type="button" class="button" value="Add Columns" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value);">
 	<input type="button" class="button" value="Add Rows" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value);">
-	<input type="button" class="button" value="Delete" onclick="JHTableEditor.delete_selection()">
+	<input type="button" class="button" value="Delete Rows" onclick="JHTableEditor.delete_selected_rows()">
+	<input type="button" class="button" value="Delete Columns" onclick="JHTableEditor.delete_selected_columns()">
 </div>
 
 <div class="error notice" id="table-editor-error" style="display: none;">
@@ -117,7 +118,7 @@ class JHDataTablesAdmin
 	
 <div id="table-editor"></div>
 
-<textarea name="post_content" id="post_content" style="display: none"><?php 
+<textarea name="post_content" id="post-content" style="display: none; width: 400px; height: 200px"><?php 
 
 $content = get_post_field('post_content', $in_post->ID, 'raw');
 if ($content == '')

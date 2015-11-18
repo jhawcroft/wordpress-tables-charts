@@ -35,8 +35,6 @@ div#table-editor
 	position: relative;
 
 	border: 1px solid #999;
-	overflow-x: scroll;
-	overflow-y: scroll;
 	position: relative;
 	background-color: #666;
 	
@@ -48,6 +46,28 @@ div#table-editor
     user-select: none;
 }
 
+div#table-scroller
+{
+	display: block;
+	position: relative;
+	overflow-x: scroll;
+	overflow-y: scroll;
+	height: 100%;
+	width: 100%;
+}
+
+div.table-col-resizer
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	z-index: 10;
+	width: 5px;
+	border: 1px dotted red;
+	height: 100%;
+	cursor: col-resize;
+}
+
 table#edited-table
 {
 	border-collapse: collapse;
@@ -56,13 +76,27 @@ table#edited-table
 	left: -1px;
 	top: -1px;
 	background-color: white;
+	z-index: 5;
+	table-layout: fixed;
 }
 
 table#edited-table td
 {
 	border: 1px dotted #AAA;
 	cursor: cell;
+	box-sizing: border-box;
+	min-width: 20px;
 }
+
+table#edited-table td.cell-selected
+{
+	background-color: #9CF;
+}
+
+
+
+
+
 
 /*
 table#edited-table td:last-child
@@ -150,7 +184,7 @@ table.table-editor-selectors td div
 	cursor: col-resize;
 }
 
-
+/*
 
 table#edited-table
 {
@@ -167,6 +201,6 @@ table#edited-table td
 	min-width: 20px;
 	cursor: cell;
 	border: 1px dotted #AAA;
-}
+}*/
 
 
