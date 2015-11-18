@@ -78,6 +78,12 @@ class JHDataTablesAdmin
 	public static function save_table($in_post_id) // also, this gets called on new
 	{
 		$content = stripslashes($_POST['post_content']);
+		
+		$content = str_replace(' contenteditable="false"', '', $content);
+		$content = str_replace(' class=""', '', $content);
+		
+		//wp_die($content);
+		
 		/*
 		if ($content == '') return;
 		
@@ -115,7 +121,7 @@ class JHDataTablesAdmin
 	
 <div id="table-editor"></div>
 
-<textarea name="post_content" id="post-content" style="display: none; width: 400px; height: 200px"><?php 
+<textarea name="post_content" id="post-content" style="display: none; width: 600px; height: 400px;"><?php 
 
 $content = get_post_field('post_content', $in_post->ID, 'raw');
 if ($content == '')

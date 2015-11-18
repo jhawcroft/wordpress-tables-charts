@@ -43,6 +43,7 @@ div#table-editor
     user-select: none;
 }
 
+
 div#table-scroller
 {
 	display: block;
@@ -50,21 +51,33 @@ div#table-scroller
 	overflow-x: scroll;
 	overflow-y: scroll;
 	height: 100%;
-	width: 100%;
+	width: auto;
+}
+
+
+div#edit-table-wrapper
+{
+	display: block;
+	position: static;
+	padding-right: 30px;
+	padding-bottom: 30px;
+	min-width: 500%;
 }
 
 
 
 table#edited-table
 {
+	display: table;
 	border-collapse: collapse;
 	border: 1px solid #AAA;
-	position: absolute;
-	left: 4px;
-	top: 4px;
+	position: static;
 	background-color: white;
 	table-layout: fixed;
 	box-shadow: 1px 3px 4px 0px #000;
+	margin: 4px;
+	margin-bottom: 30px;
+	margin-right: 30px;
 }
 
 table#edited-table td
@@ -161,6 +174,7 @@ a#toolbar-btn-table:before
 	font-family: "dashicons";
 	font-size: 20px;
     content: "\f535";
+    speak: none;
 }
 
 

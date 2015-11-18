@@ -80,13 +80,14 @@ JHTableEditor._column_resize = function(in_event)
 	
 	var width_element = this._body.children[0].children[col_idx];
 	var start_width = width_element.clientWidth;
-	var start_pos = Number.parseInt(target.style.left, 10);
+	//var start_pos = Number.parseInt(target.style.left, 10);
 	//return; //debug
 	
 	this._drag_begin(in_event, function(in_dx, in_dy, in_target)
 	{
 		width_element.style.width = start_width + in_dx + 'px';
-		target.style.left = start_pos + in_dx + 'px';
+		width_element.style.minWidth = start_width + in_dx + 'px';
+		//target.style.left = start_pos + in_dx + 'px';
 	});
 }
 
@@ -590,8 +591,8 @@ JHTableEditor._ready_save = function(in_event)
 	this._end_edits();
 	
 	var content_element = document.getElementById('post-content');
-	var output = this._scroller.innerHTML;
-	content_element.value = JSON.stringify(output);
+	var output = '<table>'+this._table.innerHTML+'</table>';
+	content_element.value = output;
 }
 
 
@@ -678,8 +679,13 @@ JHTableEditor._load = function(in_content)
 	editor_elements.appendChild(scroller);
 	this._scroller = scroller;
 	
+	var wrapper = document.createElement('div');
+	wrapper.id = 'edit-table-wrapper';
+	
 	table.id = 'edited-table';
-	scroller.appendChild(table);
+	
+	wrapper.appendChild(table);
+	scroller.appendChild(wrapper);
 	this._table = table;
 	this._body = table.getElementsByTagName('tbody')[0];
 	
