@@ -215,8 +215,15 @@ JHTableEditor._mousedown = function(event)
 		this.select_none();
 }
 
+/*
+JHTableEditor._mousemove = function(in_event)
+{
+	var target = event.target;
+	
+	alert('tag');
+}
 
-
+*/
 
 
 
@@ -722,6 +729,8 @@ JHTableEditor._add_event_listeners = function()
 	this._editor.addEventListener('keydown', this._keydown.bind(this));
 	
 	this._scroller.addEventListener('mousedown', this._mousedown.bind(this));
+	
+	//this._scroller.addEventListener('mousemove', this._mousemove.bind(this));
 	
 	document.forms['post'].addEventListener('submit', JHTableEditor._ready_save.bind(this));
 	document.getElementById('post-preview').addEventListener('click', JHTableEditor._ready_save.bind(this));

@@ -198,3 +198,11 @@ a#toolbar-btn-table:before
 }
 
 
+
+div#table-editor.cursor-col-resize
+{
+	cursor: col-resize;
+}
+
+
+
