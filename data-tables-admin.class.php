@@ -106,8 +106,14 @@ class JHDataTablesAdmin
 	?>
 	
 <div id="table-editor-toolbar">
-	<input type="text" value="1" id="add-column-count" style="width: 40px;"> <input type="button" class="button" value="Add Columns" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value);">
-	<input type="button" class="button" value="Add Rows" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value);">
+	<input type="text" value="1" id="add-column-count" style="width: 40px;"> 
+	
+	<input type="button" class="button" value="Insert Columns After" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value, true);">
+	<input type="button" class="button" value="Insert Rows After" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value, true);">
+	
+	<input type="button" class="button" value="Insert Columns Before" onclick="JHTableEditor.insert_columns(document.getElementById('add-column-count').value, false);">
+	<input type="button" class="button" value="Insert Rows Before" onclick="JHTableEditor.insert_rows(document.getElementById('add-column-count').value, false);">
+	
 	<input type="button" class="button" value="Delete Rows" onclick="JHTableEditor.delete_selected_rows()">
 	<input type="button" class="button" value="Delete Columns" onclick="JHTableEditor.delete_selected_columns()">
 </div>

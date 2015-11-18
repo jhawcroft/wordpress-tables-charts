@@ -225,8 +225,13 @@ Cell Selections
 JHTableEditor.select_none = function()
 {
 	this._set_show_selected(this._selected_cells, false);
+	
 	this._selected_cells.length = 0;
-	this._selected_edges = false;
+	
+	this._selection_left = 0;
+	this._selection_top = 0;
+	this._selection_right = 0;
+	this._selection_bottom = 0;
 	
 	this._end_edits();
 }
@@ -415,11 +420,31 @@ JHTableEditor.delete_selected_rows = function()
 
 JHTableEditor.insert_rows = function(in_count, in_after, in_rel_row)
 {
+	this._end_edits();
+	
+	var row_count = this.get_row_count();
+	
+	if (in_after === undefined)
+		in_after = true;
 	if (in_rel_row === undefined)
 	{
-		in_rel_row = this.get_row_count();
-		in_after = true;
+		if (this._selected_cells.length == 0)
+			in_rel_row = row_count;
+		else
+		{
+			if (in_after) in_rel_row = this._selection_bottom;
+			else in_rel_row = this._selection_top;
+		}
 	}
+	
+	var rel_tr = null;
+	if (in_after)
+	{
+		if (in_rel_row + 1 < row_count)
+			rel_tr = this._body.children[in_rel_row + 1];
+	}
+	else
+		rel_tr = this._body.children[in_rel_row];
 	
 	var col_count = this.get_column_count();
 	for (var r = 0; r < in_count; r++)
@@ -431,17 +456,45 @@ JHTableEditor.insert_rows = function(in_count, in_after, in_rel_row)
 			td.innerHTML = '<br>';
 			tr.appendChild(td);
 		}
-		this._body.appendChild(tr);
+		
+		if (in_after)
+		{
+			if (rel_tr) this._body.insertBefore(tr, rel_tr);
+			else this._body.appendChild(tr);
+		}
+		else
+			this._body.insertBefore(tr, rel_tr);
 	}
+	
+	this.select_none();
 }
 
 
 JHTableEditor.insert_columns = function(in_count, in_after, in_rel_col)
 {
+	this._end_edits();
+	
+	var col_count = this.get_column_count();
+	
+	if (in_after === undefined)
+		in_after = true;
 	if (in_rel_col === undefined)
 	{
-		in_rel_col = this.get_column_count();
-		in_after = true;
+		if (this._selected_cells.length == 0)
+			in_rel_col = col_count;
+		else
+		{
+			if (in_after) in_rel_col = this._selection_right;
+			else in_rel_col = this._selection_left;
+		}
+	}
+	
+	if (in_after)
+	{
+		if (in_rel_col + 1 >= col_count)
+			in_rel_col = null;
+		else
+			in_rel_col++;
 	}
 	
 	var row_count = this.get_row_count();
@@ -452,9 +505,18 @@ JHTableEditor.insert_columns = function(in_count, in_after, in_rel_col)
 		{
 			var td = document.createElement('td');
 			td.innerHTML = '<br>';
-			tr.appendChild(td);
+			
+			if (in_after)
+			{
+				if (in_rel_col === null) tr.appendChild(td);
+				else tr.insertBefore(td, tr.children[in_rel_col]);
+			}
+			else
+				tr.insertBefore(td, tr.children[in_rel_col]);
 		}
 	}
+	
+	this.select_none();
 }
 
 
