@@ -210,6 +210,8 @@ JHTableEditor._mousedown = function(event)
 		else
 			this._handle_multi_cell_select(event);
 	}
+	else
+		this.select_none();
 }
 
 
@@ -710,8 +712,10 @@ JHTableEditor.error = function(in_message)
 
 JHTableEditor._add_event_listeners = function()
 {
-	this._editor.addEventListener('mousedown', this._mousedown.bind(this));
+	//this._editor.addEventListener('mousedown', this._mousedown.bind(this));
 	this._editor.addEventListener('keydown', this._keydown.bind(this));
+	
+	this._scroller.addEventListener('mousedown', this._mousedown.bind(this));
 	
 	document.forms['post'].addEventListener('submit', JHTableEditor._ready_save.bind(this));
 	document.getElementById('post-preview').addEventListener('click', JHTableEditor._ready_save.bind(this));
@@ -724,7 +728,7 @@ JHTableEditor._add_event_listeners = function()
 
 JHTableEditor._screen_resized = function()
 {
-	this._editor.style.height = window.innerHeight * 0.5 + 'px';
+	this._editor.style.height = window.innerHeight * 0.6 + 'px';
 }
 
 
@@ -758,9 +762,11 @@ JHTableEditor.init_toolbar = function()
 {
 	var toolbar = document.getElementById('table-editor-toolbar');
 	
-	var btn = document.createElement('input');
-	btn.type = 'button';
+	var btn = document.createElement('a');
+	btn.href = '#';
+	btn.title = 'Table';
 	btn.classList.add('jh-toolbar-btn');
+	btn.id = 'toolbar-btn-table';
 	btn.addEventListener('mousedown', function(in_event)
 	{
 		var menu = [];
@@ -783,7 +789,6 @@ JHTableEditor.init_toolbar = function()
 		
 		JHUIUtils.popup_menu(menu, in_event.target);
 	});
-	
 	toolbar.appendChild(btn);
 }
 
