@@ -164,28 +164,68 @@ JHTableEditor._cell_identity = function(in_cell)
 
 
 
+JHTableEditor._end_edit_with_tinymce = function()
+{
+	this._editing_cell.removeChild(this._mce_element);
+	this._editing_cell.innerHTML = this._mce_element.innerHTML;
+	this._mce_element = null;
+}
+
+
+JHTableEditor._edit_with_tinymce = function(in_cell)
+{
+	var mce_element = this._mce_element = document.createElement('div');
+	mce_element.id = 'editable-div';
+	mce_element.innerHTML = this._editing_cell.innerHTML;
+	this._editing_cell.innerHTML = '';
+	this._editing_cell.appendChild(mce_element);
+	
+	tinymce.init({
+		selector: "div#editable-div",
+		inline: true,
+		toolbar: "undo redo",
+		menubar: false,
+		forced_root_block: true,
+		auto_focus: 'editable-div'
+	});
+	//in_cell.focus();
+	//tinymce.execCommand('mceFocus',false,'#editable');
+	//document.execCommand('selectAll',false,null);
+}
+
 
 JHTableEditor._end_edits = function()
 {
 	if (!this._editing_cell) return;
-	this._editing_cell.contentEditable = false;
-	this._editing_cell = null;
+	
 	if (document.activeElement) document.activeElement.blur();
 	if (window.getSelection && window.getSelection().removeAllRanges) 
 		window.getSelection().removeAllRanges();
+	
+	tinymce.remove();
+	this._end_edit_with_tinymce();
+	//this._editing_cell.contentEditable = false;
+	
+	this._editing_cell.id = '';
+	this._editing_cell = null;
 }
 
 
 JHTableEditor._edit_cell = function(in_cell)
 {
+	if (this._editing_cell === in_cell) return;
+	
 	this.select_none();
 	this._end_edits();
 	
 	this._editing_cell = in_cell;
-	in_cell.contentEditable = true;
+	in_cell.id = 'editable';
 	
-	in_cell.focus();
-	document.execCommand('selectAll',false,null);
+	this._edit_with_tinymce();
+	
+	//in_cell.contentEditable = true;
+	//in_cell.focus();
+	//document.execCommand('selectAll',false,null);
 }
 
 
@@ -197,33 +237,27 @@ JHTableEditor._edit_cell = function(in_cell)
 JHTableEditor._mousedown = function(event)
 {
 	var target = event.target;
-	var coords = this._element_rel_event_coords(event);
-	//if (target.classList.contains('corner'))
-	//	this.select_none();
-	//if (target.classList.contains('table-col-resizer'))
-	//	this._column_resize(event);
-	//else if (target.classList.contains('sel'))
-	//	this._handle_multi_edge_select(event);
+	
+	if (this._editing_cell && (this._editing_cell === target || this._editing_cell.contains(target)))
+		return;
+
 	if (target.nodeName == 'TD')
 	{
+		var coords = this._element_rel_event_coords(event);
 		if (coords.x >= target.clientWidth - 5)
 			this._column_resize(event);
 		else
 			this._handle_multi_cell_select(event);
 	}
-	else
-		this.select_none();
+	else if (target === this._editor || target === this._scroller || target == this._wrapper)
+	{
+		if (this._editing_cell)
+			this._end_edits();
+		else
+			this.select_none();
+	}
 }
 
-/*
-JHTableEditor._mousemove = function(in_event)
-{
-	var target = event.target;
-	
-	alert('tag');
-}
-
-*/
 
 
 
@@ -577,6 +611,9 @@ JHTableEditor._prev_cell = function(in_cell)
 
 JHTableEditor._keydown = function(in_event)
 {
+	//if (this._mce_element) return;////
+	
+	
 	if (in_event.keyCode == this.KEY_TAB && this._editing_cell)
 	{
 		var cell = this._editing_cell;
@@ -688,6 +725,7 @@ JHTableEditor._load = function(in_content)
 	
 	var wrapper = document.createElement('div');
 	wrapper.id = 'edit-table-wrapper';
+	this._wrapper = wrapper;
 	
 	table.id = 'edited-table';
 	

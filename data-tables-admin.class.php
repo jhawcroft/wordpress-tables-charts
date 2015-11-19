@@ -41,8 +41,9 @@ class JHDataTablesAdmin
 		wp_register_style( 'jh-data-tables-admin-css', plugins_url('admin.css', __FILE__) );
 		wp_register_script( 'jh-data-tables-ui-util-js', plugins_url('ui-util.js', __FILE__) );
 		wp_register_script( 'jh-data-tables-admin-js', plugins_url('admin.js', __FILE__) );
+		wp_register_script( 'jh-data-tables-tinymce-js', plugins_url( 'tinymce/tinymce.min.js', __FILE__) );
 		add_action( 'admin_enqueue_scripts', array('JHDataTablesAdmin', 'admin_scripts') );
-	
+		
 		add_action( 'add_meta_boxes', array('JHDataTablesAdmin', 'add_table_editor') );
 		add_action( 'save_post', array('JHDataTablesAdmin', 'save_table') );
 		//add_action('admin_menu', array('JHDataTablesAdmin', 'add_admin_menus'));
@@ -52,6 +53,7 @@ class JHDataTablesAdmin
 	public static function admin_scripts()
 	{
 		wp_enqueue_script( 'jh-data-tables-ui-util-js' );
+		wp_enqueue_script( 'jh-data-tables-tinymce-js' );
 		wp_enqueue_script( 'jh-data-tables-admin-js' );
 		wp_enqueue_style( 'jh-data-tables-admin-css' );
 	}
@@ -110,6 +112,8 @@ class JHDataTablesAdmin
 	
 	public static function render_table_editor($in_post)
 	{
+	
+	
 		
 	?>
 	

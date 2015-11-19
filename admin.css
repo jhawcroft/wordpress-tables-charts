@@ -205,4 +205,21 @@ div#table-editor.cursor-col-resize
 }
 
 
+div#editable-div
+{
+	cursor: auto;
+	
+	-webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+#editable-div p
+{
+	margin: 0;
+}
+
 
