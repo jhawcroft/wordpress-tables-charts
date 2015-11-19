@@ -167,7 +167,7 @@ JHTableEditor._cell_identity = function(in_cell)
 JHTableEditor._end_edit_with_tinymce = function()
 {
 	this._editing_cell.removeChild(this._mce_element);
-	if (this._mce_element.children.length == 0 && this._mce_element.childen[0].nodeName == 'P')
+	if (this._mce_element.children.length == 1 && this._mce_element.children[0].nodeName == 'P')
 		this._editing_cell.innerHTML = this._mce_element.children[0].innerHTML;
 	else
 		this._editing_cell.innerHTML = this._mce_element.innerHTML;

@@ -83,6 +83,10 @@ class JHDataTablesAdmin
 		
 		$content = str_replace(' contenteditable="false"', '', $content);
 		$content = str_replace(' class=""', '', $content);
+		$content = str_replace(' id=""', '', $content);
+		
+		//$output = preg_replace('/(<[^>]+) id=".*?"/i', '$1', $output);
+		//$output = preg_replace('/(<[^>]+) class=".*?"/i', '$1', $output);
 		
 		//wp_die($content);
 		
