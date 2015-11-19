@@ -73,10 +73,10 @@ JHTableEditor._drag_finish = function(in_event)
 
 
 
-JHTableEditor._column_resize = function(in_event)
+JHTableEditor._column_resize = function(in_cell, in_event)
 {
-	var target = in_event.target;
-	var col_idx = this._cell_identity(in_event.target)[0];
+	var target = in_cell;
+	var col_idx = this._cell_identity(target)[0];
 	
 	var width_element = this._body.children[0].children[col_idx];
 	var start_width = width_element.clientWidth;
@@ -167,7 +167,10 @@ JHTableEditor._cell_identity = function(in_cell)
 JHTableEditor._end_edit_with_tinymce = function()
 {
 	this._editing_cell.removeChild(this._mce_element);
-	this._editing_cell.innerHTML = this._mce_element.innerHTML;
+	if (this._mce_element.children.length == 0 && this._mce_element.childen[0].nodeName == 'P')
+		this._editing_cell.innerHTML = this._mce_element.children[0].innerHTML;
+	else
+		this._editing_cell.innerHTML = this._mce_element.innerHTML;
 	this._mce_element = null;
 }
 
@@ -185,7 +188,7 @@ JHTableEditor._edit_with_tinymce = function(in_cell)
 		inline: true,
 		toolbar: "undo redo",
 		menubar: false,
-		forced_root_block: true,
+		
 		auto_focus: 'editable-div'
 	});
 	//in_cell.focus();
@@ -231,7 +234,15 @@ JHTableEditor._edit_cell = function(in_cell)
 
 
 
-
+JHTableEditor._has_td_parent = function(in_element)
+{
+	while (in_element !== this._wrapper)
+	{
+		if (in_element.nodeName == 'TD') return in_element;
+		in_element = in_element.parentElement;
+	}
+	return null;
+}
 
 
 JHTableEditor._mousedown = function(event)
@@ -241,13 +252,14 @@ JHTableEditor._mousedown = function(event)
 	if (this._editing_cell && (this._editing_cell === target || this._editing_cell.contains(target)))
 		return;
 
-	if (target.nodeName == 'TD')
+	var cell = null;
+	if (cell = this._has_td_parent(target))//.nodeName == 'TD')
 	{
-		var coords = this._element_rel_event_coords(event);
-		if (coords.x >= target.clientWidth - 5)
-			this._column_resize(event);
+		var coords = this._element_rel_event_coords(cell, event);
+		if (coords.x >= cell.clientWidth - 5)
+			this._column_resize(cell, event);
 		else
-			this._handle_multi_cell_select(event);
+			this._handle_multi_cell_select(cell, event);
 	}
 	else if (target === this._editor || target === this._scroller || target == this._wrapper)
 	{
@@ -256,6 +268,7 @@ JHTableEditor._mousedown = function(event)
 		else
 			this.select_none();
 	}
+	else return true;
 }
 
 
@@ -362,11 +375,11 @@ JHTableEditor._select_row = function(in_row_index)
 }*/
 
 
-JHTableEditor._handle_multi_cell_select = function(in_event)
+JHTableEditor._handle_multi_cell_select = function(in_cell, in_event)
 {
 	this.select_none();
 
-	var target = in_event.target;
+	var target = in_cell;
 	this._cell_begin = this._cell_identity(target);
 	this._cell_end = target;
 	this._multi_select_occurred = false;
@@ -386,9 +399,13 @@ JHTableEditor._handle_multi_cell_select = function(in_event)
 	},
 	function(in_target)
 	{
-		if (in_target.nodeName != 'TD' || in_target.classList.contains('sel')) return;
-		if (!JHTableEditor._multi_select_occurred)
-			JHTableEditor._edit_cell(in_target);
+		in_target = this._has_td_parent(in_target);
+		if (in_target)
+		{
+			if (in_target.nodeName != 'TD' || in_target.classList.contains('sel')) return;
+			if (!JHTableEditor._multi_select_occurred)
+				JHTableEditor._edit_cell(in_target);
+		}
 	});
 }
 
@@ -678,9 +695,9 @@ JHTableEditor._determine_column_widths = function()
 }
 
 
-JHTableEditor._element_rel_event_coords = function(in_event)
+JHTableEditor._element_rel_event_coords = function(in_element, in_event)
 {
-	var target = in_event.target;
+	var target = in_element;
 	var rect = target.getBoundingClientRect();
 	var target_coords = [Math.round(rect.left), Math.round(rect.top)];
 	
