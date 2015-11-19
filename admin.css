@@ -217,9 +217,18 @@ div#editable-div
     user-select: text;
 }
 
-#editable-div p
+
+#edited-table p
 {
 	margin: 0;
+	margin-bottom: 5px;
 }
+
+#edited-table p:last-child
+{
+	margin-bottom: 0;
+}
+
+
 
 
