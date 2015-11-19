@@ -167,9 +167,9 @@ JHTableEditor._cell_identity = function(in_cell)
 JHTableEditor._end_edit_with_tinymce = function()
 {
 	this._editing_cell.removeChild(this._mce_element);
-	if (this._mce_element.children.length == 1 && this._mce_element.children[0].nodeName == 'P')
-		this._editing_cell.innerHTML = this._mce_element.children[0].innerHTML;
-	else
+	//if (this._mce_element.children.length == 1 && this._mce_element.children[0].nodeName == 'P')
+	//	this._editing_cell.innerHTML = this._mce_element.children[0].innerHTML;
+	//else
 		this._editing_cell.innerHTML = this._mce_element.innerHTML;
 	this._mce_element = null;
 }
@@ -186,7 +186,7 @@ JHTableEditor._edit_with_tinymce = function(in_cell)
 	tinymce.init({
 		selector: "div#editable-div",
 		inline: true,
-		toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
+		toolbar: "undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | subscript superscript | link",
 		menubar: false,
 		
 		auto_focus: 'editable-div',

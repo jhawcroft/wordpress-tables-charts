@@ -1,5 +1,5 @@
-<?php
 /*
+JH Data Tables
 Copyright (c) 2015, Joshua Hawcroft
 All rights reserved.
 
@@ -24,56 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-class JHDataTables
+
+
+table.JHDataTable p:last-child
 {
-	public static function init()
-	{
-		
-		JHDataTables::setup_custom_post_type();
-		
-		wp_register_style( 'jh-data-tables-css', plugins_url('default.css', __FILE__) );
-		
-		add_action( 'wp_enqueue_scripts', array('JHDataTables', 'scripts') );
-	}
-	
-	public static function scripts()
-	{
-		wp_enqueue_style( 'jh-data-tables-css' );
-	}
-	
-	public static function setup_custom_post_type()
-	{
-		register_post_type( 'jh-data-table',
-			array(
-			  'labels' => array(
-				'name' => __( 'JH Data Tables' ),
-				'singular_name' => __( 'JH Data Table' ),
-				'all_items' => __( 'Manage Tables' )
-			  ),
-			  'public' => true,
-			  'has_archive' => true,
-			  'menu_icon' => 'dashicons-analytics',
-			  'rewrite' => array('slug' => 'data-tables'),
-			)
-		);
-	  	remove_post_type_support('jh-data-table', 'editor');
-	  	
-	  	//global $wp_rewrite;
-	  	//$wp_rewrite->flush_rules( true );  ought to be called at plug-in activation, 
-	  	// after registration of custom post types, etc. as this is an expensive call
-	}
-	
-	
-	public static function install()
-	{
-	
-		
-		add_option( 'Activated_Plugin', 'jh-data-tables' );
-	}
-	
-	
-	
-	
-};
+	margin-bottom: 0;
+}
+
+table.JHDataTable ul:last-child
+{
+	margin-bottom: 0;
+}
+
+table.JHDataTable ol:last-child
+{
+	margin-bottom: 0;
+}
 
 

@@ -81,6 +81,7 @@ class JHDataTablesAdmin
 	{
 		$content = stripslashes($_POST['post_content']);
 		
+		$content = str_replace('<table>', '<table class="JHDataTable">', $content);
 		$content = str_replace(' contenteditable="false"', '', $content);
 		$content = str_replace(' class=""', '', $content);
 		$content = str_replace(' id=""', '', $content);
