@@ -186,10 +186,17 @@ JHTableEditor._edit_with_tinymce = function(in_cell)
 	tinymce.init({
 		selector: "div#editable-div",
 		inline: true,
-		toolbar: "undo redo",
+		toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link",
 		menubar: false,
 		
-		auto_focus: 'editable-div'
+		auto_focus: 'editable-div',
+		
+		setup: function (ed) {
+			ed.on('init', function (evt) 
+			{
+				
+			});
+		}
 	});
 	//in_cell.focus();
 	//tinymce.execCommand('mceFocus',false,'#editable');
